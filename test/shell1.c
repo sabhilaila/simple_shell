@@ -3,7 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
-
+#include "shell.h"
 #define MAX_COMMAND_LENGTH 100
 #define MAX_ARGUMENTS 10
 

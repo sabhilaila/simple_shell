@@ -3,11 +3,13 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <sys/types.h>
 #include "shell.h"
 #define MAX_COMMAND_LENGTH 100
 #define MAX_ARGUMENTS 10
 
-int shell3(void) {
+int shell2(void) 
+{
 char command[MAX_COMMAND_LENGTH];
 char *arguments[MAX_ARGUMENTS];
 char *token;
@@ -37,17 +39,19 @@ if (pid < 0)
 {
 perror("fork");
 exit(EXIT_FAILURE);
-} else if (pid == 0) 
+}
+ else if (pid == 0) 
 {
-execvp(arguments[0], arguments);
+if (execvp(arguments[0], arguments) == -1) 
+{
 printf("%s: command not found\n", arguments[0]);
 exit(EXIT_FAILURE);
 }
- else 
+}
+else
 {
 wait(NULL);
 }
 }
-
 return (0);
 }
