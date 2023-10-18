@@ -11,16 +11,20 @@
  *
  * Return: 0 for success
  */
-int shell(void) {
+int shell(void)
+{
 char command[MAX_COMMAND_LENGTH];
-while (1) {
+while (1)
+{
 printf("#cisfun$ ");
-if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL) {
+if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
+{
 printf("\n");
 break;
 }
 command[strlen(command) - 1] = '\0';
-if (fork() == 0) {
+if (fork() == 0)
+{
 execlp(command, command, (char *)NULL);
 perror(command);
 exit(EXIT_FAILURE);
