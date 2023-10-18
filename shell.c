@@ -4,8 +4,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include "main.h"
-#include <string.h>
 #define MAX_COMMAND_LENGTH 100
+#include <string.h>i
 /**
  * shell - entry point
  *
@@ -14,8 +14,6 @@
 int shell(void)
 {
 char command[MAX_COMMAND_LENGTH];
-pid_t pid;
-
 while (1)
 {
 printf("#cisfun$ ");
@@ -25,23 +23,14 @@ printf("\n");
 break;
 }
 command[strcspn(command, "\n")] = 0;
-pid = fork();
-if (pid == 0)
+if (fork() == 0)
 {
 execlp(command, command, (char *)NULL);
 perror(command);
 exit(EXIT_FAILURE);
 }
-else if (pid < 0)
-{
-perror("fork");
-exit(EXIT_FAILURE);
-}
-else
-{
-int status;
-wait(&status);
-}
+wait(NULL);
 }
 return (0);
 }
+
