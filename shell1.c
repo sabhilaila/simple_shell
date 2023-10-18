@@ -4,46 +4,43 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
-#include "shell.h"
-int main(void) 
-{
-char *command;
-char prompt[] = "#cisfun$ ";
 
-while (1) 
-{
-printf("%s", prompt);
-command = NULL;
-size_t bufsize = 0;
-getline(&command, &bufsize, stdin);
+#define MAX_INPUT_SIZE 1024
 
-if (command[0] == '\n') 
-{
-free(command);
-continue;
+int main(void) {
+char input[MAX_INPUT_SIZE];
+pid_t pid;
+
+while (1) {
+printf("#cisfun$ ");
+if (fgets(input, MAX_INPUT_SIZE, stdin) == NULL) {
+printf("\n");
+break;
 }
 
-command[strlen(command) - 1] = '\0';
+input[strcspn(input, "\n")] = '\0';
 
-pid_t pid = fork();
-if (pid == 0) 
-{
-char* args[] = {command, NULL};
-if (execve(command, args, NULL) == -1) 
-{
-perror("./shell");
+if (strcmp(input, "exit") == 0) {
+break;
+}
+
+pid = fork();
+
+if (pid == -1) {
+perror("fork");
 exit(EXIT_FAILURE);
 }
+
+if (pid == 0) {
+if (execlp(input, input, (char *)NULL) == -1) {
+perror(input);
 }
-else if (pid < 0) 
-{
-perror("fork");
+exit(EXIT_FAILURE);
+} else {
+wait(NULL);
 }
-else 
-{
-waitpid(pid, NULL, 0);
 }
-free(command);
-}
+
 return (0);
 }
+
