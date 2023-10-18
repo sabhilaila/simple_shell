@@ -6,4 +6,5 @@ void handle_eof(void);
 void handle_error(char *message);
 int main(void);
 void display_prompt(void);
+void handle_path(char *input);
 #endif
