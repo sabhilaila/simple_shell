@@ -1,8 +1,7 @@
-#include "prompt.c"
-#include "error_handling.c"
-#include "eof_handling.c"
-#include "argument_handling.c"
 #include "main.h"
+#include <string.h>
+#include <stddef.h>
+#include <stdio.h>
 int main(void) {
     char input[MAX_INPUT_SIZE];
 
