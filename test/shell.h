@@ -1,5 +1,5 @@
-#define SHELL_H
 #ifndef SHELL_H
+#define SHELL_H
 
 int shell0(void);
 int shell1(void);
