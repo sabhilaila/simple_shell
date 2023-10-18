@@ -3,28 +3,24 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include "main.h"
+#include <string.h>
+
 #define MAX_COMMAND_LENGTH 100
-#include <string.h>i
 /**
  * shell - entry point
  *
  * Return: 0 for success
  */
-int shell(void)
-{
+int shell(void) {
 char command[MAX_COMMAND_LENGTH];
-while (1)
-{
+while (1) {
 printf("#cisfun$ ");
-if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
-{
+if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL) {
 printf("\n");
 break;
 }
-command[strcspn(command, "\n")] = 0;
-if (fork() == 0)
-{
+command[strlen(command) - 1] = '\0';
+if (fork() == 0) {
 execlp(command, command, (char *)NULL);
 perror(command);
 exit(EXIT_FAILURE);
