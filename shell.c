@@ -7,9 +7,6 @@
 #include <string.h>
 #include <fcntl.h>
 
-#define MAX_COMMAND_LENGTH 100
-#define MAX_ARGUMENTS 10
-
 void execute_commands(char *args[], int background) {
     pid_t pid = fork();
     if (pid == -1) {
