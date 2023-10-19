@@ -33,6 +33,11 @@ void execute_command(char *args[], int background) {
 
 int main(void) {
     char command[MAX_COMMAND_LENGTH];
+    char *args[MAX_ARGUMENTS];
+        char *token = strtok(command, " ");
+        int arg_count = 0;
+        int background = 0;
+
     while (1) {
         printf("#cisfun$ ");
         if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL) {
@@ -40,12 +45,7 @@ int main(void) {
             break;
         }
         command[strlen(command) - 1] = '\0';
-        
-        char *args[MAX_ARGUMENTS];
-        char *token = strtok(command, " ");
-        int arg_count = 0;
-        int background = 0;
-        
+         
         while (token != NULL) {
             if (strcmp(token, "&") == 0) {
                 background = 1;
