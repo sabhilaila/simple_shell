@@ -1,17 +1,18 @@
-#include "shell.c"
+#include "shell.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <string.h>
-#include <fcntl.h>
+#include <unistd.h>
+
+#define MAX_COMMAND_LENGTH 100
+#define MAX_ARGUMENTS 10
+
 int main(void) {
     char command[MAX_COMMAND_LENGTH];
     char *args[MAX_ARGUMENTS];
-        char *token = strtok(command, " ");
-        int arg_count = 0;
-        int background = 0;
+    char *token;
+    int arg_count;
+    int background;
 
     while (1) {
         printf("#cisfun$ ");
@@ -20,7 +21,10 @@ int main(void) {
             break;
         }
         command[strlen(command) - 1] = '\0';
-        
+        token = strtok(command, " ");
+        arg_count = 0;
+        background = 0;
+
         while (token != NULL) {
             if (strcmp(token, "&") == 0) {
                 background = 1;
@@ -31,7 +35,7 @@ int main(void) {
             token = strtok(NULL, " ");
         }
         args[arg_count] = NULL;
-        
+
         if (arg_count > 0) {
             if (strcmp(args[0], "cd") == 0) {
                 if (arg_count >= 2) {
