@@ -4,33 +4,29 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <fcntl.h>
 
 #define MAX_COMMAND_LENGTH 100
-/**
- * shell - entry point
- *
- * Return: 0 for success
- */
-int shell(void)
-{
-char command[MAX_COMMAND_LENGTH];
-while (1)
-{
-printf("#cisfun$ ");
-if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
-{
-printf("\n");
-break;
-}
-command[strlen(command) - 1] = '\0';
-if (fork() == 0)
-{
-execlp(command, command, (char *)NULL);
-perror(command);
-exit(EXIT_FAILURE);
-}
-wait(NULL);
-}
-return (0);
-}
+#define MAX_ARGUMENTS 10
 
+void execute_commands(char *args[], int background) {
+    pid_t pid = fork();
+    if (pid == -1) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+    } else if (pid == 0) {
+        if (background) {
+            int devnull = open("/dev/null", O_RDWR);
+            dup2(devnull, STDIN_FILENO);
+            dup2(devnull, STDOUT_FILENO);
+            close(devnull);
+        }
+        execvp(args[0], args);
+        perror("execvp");
+        exit(EXIT_FAILURE);
+    } else {
+        if (!background) {
+            waitpid(pid, NULL, 0);
+        }
+    }
+}
