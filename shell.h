@@ -1,6 +1,10 @@
 #ifndef SHELL_H
 #define SHELL_H
 
-void execute_commands(char *args[], int background);
+#define MAX_INPUT_SIZE 1024
+#define MAX_ARGS 64
 
-#endif
+void execute_command(char **args);
+void run_shell();
+
+#endif /* SHELL_H */
